@@ -1,0 +1,183 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User model for guest accounts
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  phone     String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  bookings  Booking[]
+  reviews   Review[]
+}
+
+// Room types available at the resort
+model Room {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  basePrice   Decimal  @db.Decimal(10, 2)
+  maxGuests   Int
+  size        Int      // in square meters
+  bedType     String
+  imageUrl    String
+  images      String[] // Array of image URLs
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  bookings       Booking[]
+  amenities      RoomAmenity[]
+  inventory      RoomInventory[]
+}
+
+// Available amenities
+model Amenity {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  icon        String
+  description String?
+  
+  rooms RoomAmenity[]
+}
+
+// Junction table for rooms and amenities
+model RoomAmenity {
+  id        String @id @default(cuid())
+  roomId    String
+  amenityId String
+  
+  room    Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  amenity Amenity @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+  
+  @@unique([roomId, amenityId])
+}
+
+// Room inventory - track how many rooms of each type are available
+model RoomInventory {
+  id            String @id @default(cuid())
+  roomId        String
+  totalRooms    Int    // Total number of this room type
+  
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  
+  @@unique([roomId])
+}
+
+// Booking records
+model Booking {
+  id              String        @id @default(cuid())
+  userId          String
+  roomId          String
+  checkIn         DateTime
+  checkOut        DateTime
+  numberOfGuests  Int
+  totalPrice      Decimal       @db.Decimal(10, 2)
+  status          BookingStatus @default(PENDING)
+  specialRequests String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room    Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  payment Payment?
+  
+  @@index([checkIn, checkOut])
+  @@index([userId])
+  @@index([roomId])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+// Payment records
+model Payment {
+  id              String        @id @default(cuid())
+  bookingId       String        @unique
+  amount          Decimal       @db.Decimal(10, 2)
+  paymentMethod   String
+  paymentStatus   PaymentStatus @default(PENDING)
+  transactionId   String?
+  paidAt          DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// Guest reviews
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  rating    Int      // 1-5
+  title     String?
+  comment   String
+  isPublic  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+}
+
+// Special offers and packages
+model SpecialOffer {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  discount    Decimal   @db.Decimal(5, 2) // percentage discount
+  validFrom   DateTime
+  validUntil  DateTime
+  isActive    Boolean   @default(true)
+  code        String?   @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@index([validFrom, validUntil])
+}
+
+// Contact form submissions
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// Newsletter subscriptions
+model NewsletterSubscriber {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  isActive      Boolean  @default(true)
+  subscribedAt  DateTime @default(now())
+  unsubscribedAt DateTime?
+}
