@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { FaClock, FaUtensils, FaGlassMartini, FaConciergeBell } from 'react-icons/fa';
 
 const restaurants = [
@@ -124,7 +125,9 @@ export default function DiningPage() {
                     </div>
                   </div>
 
-                  <button className="btn-primary w-full">Reserve a Table</button>
+                  <Link href="/contact" className="btn-primary w-full text-center inline-block">
+                    Reserve a Table
+                  </Link>
                 </div>
               </div>
             ))}
@@ -173,7 +176,9 @@ export default function DiningPage() {
               Host your special occasion in our exclusive private dining rooms with personalized menus and dedicated service.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-primary">Inquire About Private Events</button>
+              <Link href="/contact" className="btn-primary">
+                Inquire About Private Events
+              </Link>
               <button className="btn-secondary">View Event Spaces</button>
             </div>
           </div>

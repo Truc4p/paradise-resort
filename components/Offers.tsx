@@ -61,9 +61,9 @@ export default function Offers() {
                   <FaClock className="mr-2" />
                   {offer.validUntil}
                 </div>
-                <button className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 rounded-lg transition-all duration-300">
+                <a href="/contact" className="block w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 text-center">
                   Book Now
-                </button>
+                </a>
               </div>
             </div>
           ))}

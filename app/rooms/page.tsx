@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { FaBed, FaExpand, FaWifi, FaTv, FaCoffee, FaBath } from 'react-icons/fa';
 
 const rooms = [
@@ -109,7 +110,9 @@ export default function RoomsPage() {
                   </div>
 
                   <div className="flex gap-4">
-                    <button className="flex-1 btn-primary">Book Now</button>
+                    <Link href="/contact" className="flex-1 btn-primary text-center">
+                      Book Now
+                    </Link>
                     <button className="flex-1 btn-secondary">View Details</button>
                   </div>
                 </div>

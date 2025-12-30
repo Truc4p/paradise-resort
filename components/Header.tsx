@@ -98,9 +98,9 @@ export default function Header() {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <button className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl">
+            <Link href="/contact" className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl inline-block">
               Book Now
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -140,7 +140,9 @@ export default function Header() {
                 )}
               </div>
             ))}
-            <button className="btn-primary w-full mt-4">Book Now</button>
+            <Link href="/contact" className="btn-primary w-full mt-4 text-center" onClick={() => setIsMenuOpen(false)}>
+              Book Now
+            </Link>
           </div>
         )}
       </nav>
