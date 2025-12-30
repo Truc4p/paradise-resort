@@ -54,10 +54,10 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <div>
-              <div className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-900 bg-clip-text text-transparent">
+              <div className="text-3xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-700 bg-clip-text text-transparent tracking-tight">
                 Paradise Resort
               </div>
-              <div className="text-xs text-gray-500 tracking-wider">LUXURY BEACHFRONT</div>
+              <div className="text-xs text-gray-500 tracking-[0.2em] font-medium">LUXURY BEACHFRONT</div>
             </div>
           </Link>
 

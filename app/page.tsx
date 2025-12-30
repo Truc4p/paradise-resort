@@ -12,16 +12,19 @@ export default function Home() {
       <Features />
       
       {/* Quick Links to Main Sections */}
-      <section className="py-20 bg-white">
+      <section className="py-32 bg-gradient-to-b from-white via-gray-50 to-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-20">
+            <div className="inline-block mb-6">
+              <span className="text-primary-600 font-semibold tracking-widest uppercase text-sm">Discover</span>
+            </div>
             <h2 className="section-title">Explore Paradise Resort</h2>
-            <p className="section-subtitle">
+            <p className="section-subtitle mt-6">
               Discover everything we have to offer
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {[
               { 
                 title: 'Rooms & Suites', 
@@ -63,19 +66,19 @@ export default function Home() {
               <Link 
                 key={index}
                 href={section.link}
-                className="group relative h-80 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+                className="group relative h-96 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100"
               >
                 <Image
                   src={section.image}
                   alt={section.title}
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-8">
-                  <h3 className="text-3xl font-bold text-white mb-2">{section.title}</h3>
-                  <p className="text-white/90 mb-4">{section.description}</p>
-                  <span className="inline-block text-white font-semibold group-hover:translate-x-2 transition-transform">
-                    Explore →
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col justify-end p-10">
+                  <h3 className="text-4xl font-bold text-white mb-3 tracking-tight">{section.title}</h3>
+                  <p className="text-white/95 mb-6 text-lg font-light">{section.description}</p>
+                  <span className="inline-flex items-center gap-3 text-white font-semibold group-hover:gap-5 transition-all text-lg tracking-wide">
+                    Explore <span className="text-2xl">→</span>
                   </span>
                 </div>
               </Link>

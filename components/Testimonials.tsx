@@ -41,57 +41,66 @@ export default function Testimonials() {
   const prev = () => setCurrentIndex((currentIndex - 1 + testimonials.length) % testimonials.length);
 
   return (
-    <section className="py-20 bg-gradient-to-br from-primary-50 via-white to-accent-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="section-title">Guest Reviews</h2>
-          <p className="section-subtitle">
+    <section className="py-32 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-primary-100 rounded-full blur-3xl opacity-20"></div>
+      <div className="absolute bottom-20 right-10 w-72 h-72 bg-accent-100 rounded-full blur-3xl opacity-20"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-20">
+          <div className="inline-block mb-6">
+            <span className="text-primary-600 font-semibold tracking-widest uppercase text-sm">Testimonials</span>
+          </div>
+          <h2 className="section-title">Guest Experiences</h2>
+          <p className="section-subtitle mt-6">
             Hear what our guests say about their paradise experience
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="relative bg-white rounded-2xl shadow-2xl p-8 md:p-12">
-            <FaQuoteLeft className="text-6xl text-primary-200 absolute top-8 left-8 opacity-50" />
+        <div className="max-w-5xl mx-auto">
+          <div className="relative bg-white rounded-3xl shadow-2xl p-12 md:p-16 border border-gray-100">
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center shadow-xl">
+              <FaQuoteLeft className="text-2xl text-white" />
+            </div>
             
             <div className="relative z-10">
-              <div className="flex items-center justify-center mb-6">
+              <div className="flex items-center justify-center mb-8">
                 {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                  <FaStar key={i} className="text-yellow-400 text-2xl mx-1" />
+                  <FaStar key={i} className="text-yellow-400 text-3xl mx-1 drop-shadow-sm" />
                 ))}
               </div>
               
-              <p className="text-xl md:text-2xl text-gray-700 text-center mb-8 italic leading-relaxed">
+              <p className="text-2xl md:text-3xl text-gray-700 text-center mb-10 font-light leading-relaxed italic">
                 "{testimonials[currentIndex].text}"
               </p>
               
               <div className="text-center">
-                <h4 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-900 bg-clip-text text-transparent">
+                <h4 className="text-2xl font-bold text-gray-900 mb-2">
                   {testimonials[currentIndex].name}
                 </h4>
-                <p className="text-gray-600">{testimonials[currentIndex].location}</p>
-                <p className="text-sm text-gray-500 mt-2">{testimonials[currentIndex].date}</p>
+                <p className="text-gray-600 font-light text-lg">{testimonials[currentIndex].location}</p>
+                <p className="text-sm text-gray-400 mt-3 font-light">{testimonials[currentIndex].date}</p>
               </div>
             </div>
 
             {/* Navigation Buttons */}
-            <div className="flex justify-center gap-4 mt-8">
+            <div className="flex justify-center gap-6 mt-12">
               <button
                 onClick={prev}
-                className="w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="w-14 h-14 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
               >
-                <FaChevronLeft />
+                <FaChevronLeft className="text-lg" />
               </button>
               <button
                 onClick={next}
-                className="w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="w-14 h-14 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
               >
-                <FaChevronRight />
+                <FaChevronRight className="text-lg" />
               </button>
             </div>
 
             {/* Dots Indicator */}
-            <div className="flex justify-center gap-2 mt-6">
+            <div className="flex justify-center gap-3 mt-8">
               {testimonials.map((_, index) => (
                 <button
                   key={index}

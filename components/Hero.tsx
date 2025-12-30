@@ -45,11 +45,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
+          className="text-6xl md:text-8xl lg:text-9xl font-bold mb-8 leading-[0.95] tracking-tighter"
         >
           Your Paradise
           <br />
-          <span className="bg-gradient-to-r from-primary-400 via-accent-400 to-primary-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-primary-300 via-accent-300 to-primary-400 bg-clip-text text-transparent drop-shadow-2xl">
             Awaits
           </span>
         </motion.h1>
@@ -58,7 +58,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed text-white/90"
+          className="text-xl md:text-2xl lg:text-3xl mb-12 max-w-4xl mx-auto leading-relaxed text-white/95 font-light"
         >
           Discover unparalleled luxury on pristine beaches. Experience world-class dining, rejuvenating spa treatments, and breathtaking ocean views.
         </motion.p>
@@ -67,19 +67,19 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
         >
-          <Link href="/rooms" className="btn-primary text-lg px-10 py-4">
+          <Link href="/rooms" className="btn-primary text-lg uppercase tracking-wider">
             Explore Rooms
           </Link>
-          <Link href="/contact" className="btn-secondary text-lg px-10 py-4 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
+          <Link href="/contact" className="bg-white/10 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/20 hover:border-white/60 font-semibold px-10 py-4 rounded-full transition-all duration-500 shadow-2xl hover:shadow-2xl hover:-translate-y-0.5 text-lg uppercase tracking-wider">
             Book Your Stay
           </Link>
-          <button className="flex items-center gap-3 text-white hover:text-primary-400 transition-colors font-semibold">
-            <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all">
-              <FaPlay className="text-white ml-1" />
+          <button className="flex items-center gap-4 text-white hover:text-primary-300 transition-all duration-300 font-medium group">
+            <div className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center hover:bg-white/25 transition-all duration-300 border border-white/30 group-hover:border-white/50 shadow-xl">
+              <FaPlay className="text-white ml-1 text-sm" />
             </div>
-            <span>Watch Video</span>
+            <span className="text-lg">Watch Video</span>
           </button>
         </motion.div>
 
@@ -88,12 +88,12 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-16 flex flex-wrap justify-center gap-8 text-sm"
+          className="mt-20 flex flex-wrap justify-center gap-6 lg:gap-8"
         >
           {['Private Beach Access', 'Infinity Pool', 'Award-Winning Spa', '5-Star Dining'].map((feature, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-primary-400 rounded-full"></div>
-              <span className="text-white/90">{feature}</span>
+            <div key={index} className="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/30 rounded-full flex items-center gap-3 hover:bg-white/20 hover:border-white/50 transition-all duration-300 shadow-lg">
+              <div className="w-2 h-2 bg-primary-300 rounded-full animate-pulse"></div>
+              <span className="text-white font-medium tracking-wide">{feature}</span>
             </div>
           ))}
         </motion.div>
