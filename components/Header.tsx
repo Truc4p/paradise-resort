@@ -21,26 +21,26 @@ export default function Header() {
     { name: 'Home', href: '/' },
     { 
       name: 'Rooms & Suites', 
-      href: '#rooms',
+      href: '/rooms',
       dropdown: [
-        { name: 'Deluxe Ocean View', href: '#rooms' },
-        { name: 'Premium Suite', href: '#rooms' },
-        { name: 'Presidential Villa', href: '#rooms' },
+        { name: 'Deluxe Ocean View', href: '/rooms#deluxe' },
+        { name: 'Premium Suite', href: '/rooms#premium' },
+        { name: 'Presidential Villa', href: '/rooms#presidential' },
       ]
     },
     { 
       name: 'Dining', 
-      href: '#dining',
+      href: '/dining',
       dropdown: [
-        { name: 'Ocean Breeze Restaurant', href: '#dining' },
-        { name: 'Seaside Grill', href: '#dining' },
-        { name: 'Sunset Lounge', href: '#dining' },
+        { name: 'Ocean Breeze Restaurant', href: '/dining#ocean-breeze' },
+        { name: 'Seaside Grill', href: '/dining#seaside-grill' },
+        { name: 'Sunset Lounge', href: '/dining#sunset-lounge' },
       ]
     },
-    { name: 'Spa & Wellness', href: '#features' },
-    { name: 'Activities', href: '#activities' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Special Offers', href: '/offers' },
+    { name: 'Activities', href: '/activities' },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   return (

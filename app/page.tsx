@@ -1,29 +1,91 @@
 import Hero from "@/components/Hero";
-import BookingBar from "@/components/BookingBar";
 import Features from "@/components/Features";
-import Rooms from "@/components/Rooms";
-import Offers from "@/components/Offers";
-import Dining from "@/components/Dining";
-import Activities from "@/components/Activities";
-import Gallery from "@/components/Gallery";
 import Testimonials from "@/components/Testimonials";
 import Newsletter from "@/components/Newsletter";
-import Booking from "@/components/Booking";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <BookingBar />
       <Features />
-      <Rooms />
-      <Offers />
-      <Dining />
-      <Activities />
-      <Gallery />
+      
+      {/* Quick Links to Main Sections */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="section-title">Explore Paradise Resort</h2>
+            <p className="section-subtitle">
+              Discover everything we have to offer
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { 
+                title: 'Rooms & Suites', 
+                image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070',
+                description: 'Luxurious accommodations with ocean views',
+                link: '/rooms'
+              },
+              { 
+                title: 'Dining', 
+                image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070',
+                description: 'World-class restaurants and bars',
+                link: '/dining'
+              },
+              { 
+                title: 'Special Offers', 
+                image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2080',
+                description: 'Exclusive packages and deals',
+                link: '/offers'
+              },
+              { 
+                title: 'Activities', 
+                image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070',
+                description: 'Recreation and entertainment',
+                link: '/activities'
+              },
+              { 
+                title: 'Gallery', 
+                image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070',
+                description: 'Visual tour of our paradise',
+                link: '/gallery'
+              },
+              { 
+                title: 'Contact', 
+                image: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?q=80&w=2070',
+                description: 'Get in touch with us',
+                link: '/contact'
+              },
+            ].map((section, index) => (
+              <Link 
+                key={index}
+                href={section.link}
+                className="group relative h-80 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+              >
+                <Image
+                  src={section.image}
+                  alt={section.title}
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-8">
+                  <h3 className="text-3xl font-bold text-white mb-2">{section.title}</h3>
+                  <p className="text-white/90 mb-4">{section.description}</p>
+                  <span className="inline-block text-white font-semibold group-hover:translate-x-2 transition-transform">
+                    Explore →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <Testimonials />
       <Newsletter />
-      <Booking />
     </>
   );
 }

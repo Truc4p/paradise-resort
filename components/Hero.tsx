@@ -2,16 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { FaPlay } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function Hero() {
-  const scrollToRooms = () => {
-    document.getElementById('rooms')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Parallax Effect */}
@@ -76,12 +69,12 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <button onClick={scrollToRooms} className="btn-primary text-lg px-10 py-4">
+          <Link href="/rooms" className="btn-primary text-lg px-10 py-4">
             Explore Rooms
-          </button>
-          <button onClick={scrollToContact} className="btn-secondary text-lg px-10 py-4 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
+          </Link>
+          <Link href="/contact" className="btn-secondary text-lg px-10 py-4 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
             Book Your Stay
-          </button>
+          </Link>
           <button className="flex items-center gap-3 text-white hover:text-primary-400 transition-colors font-semibold">
             <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all">
               <FaPlay className="text-white ml-1" />
