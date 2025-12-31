@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SessionProvider from "@/components/SessionProvider";
 import { usePathname } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,9 +25,11 @@ export default function RootLayout({
         <meta name="description" content="Experience the ultimate luxury at our beachfront resort with world-class amenities, stunning ocean views, and exceptional service." />
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        {!isAdminRoute && <Header />}
-        <main>{children}</main>
-        {!isAdminRoute && <Footer />}
+        <SessionProvider>
+          {!isAdminRoute && <Header />}
+          <main>{children}</main>
+          {!isAdminRoute && <Footer />}
+        </SessionProvider>
       </body>
     </html>
   );

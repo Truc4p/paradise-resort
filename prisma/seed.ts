@@ -172,6 +172,7 @@ async function main() {
         email: 'admin@resort.com',
         phone: '+1000000000',
         password: adminPassword,
+        role: 'ADMIN',
       },
     }),
     prisma.user.create({
@@ -180,6 +181,7 @@ async function main() {
         email: 'john@example.com',
         phone: '+1234567890',
         password: hashedPassword,
+        role: 'GUEST',
       },
     }),
     prisma.user.create({
@@ -188,6 +190,7 @@ async function main() {
         email: 'jane@example.com',
         phone: '+1987654321',
         password: hashedPassword,
+        role: 'GUEST',
       },
     }),
     prisma.user.create({
@@ -196,6 +199,7 @@ async function main() {
         email: 'michael@example.com',
         phone: '+1122334455',
         password: hashedPassword,
+        role: 'GUEST',
       },
     }),
   ]);

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 
 export default function AdminLayout({
@@ -11,33 +12,29 @@ export default function AdminLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
-  const [adminUser, setAdminUser] = useState('');
 
   useEffect(() => {
-    // Check authentication
-    const authStatus = localStorage.getItem('adminAuthenticated');
-    const user = localStorage.getItem('adminUser');
-    
-    if (pathname !== '/admin/login') {
-      if (authStatus === 'true' && user) {
-        setIsAuthenticated(true);
-        setAdminUser(user);
-        setLoading(false);
+    if (status !== 'loading') {
+      if (pathname !== '/admin/login') {
+        if (!session?.user) {
+          router.push('/admin/login');
+        } else if (session.user.role !== 'ADMIN') {
+          // User is authenticated but not an admin
+          router.push('/');
+        } else {
+          setLoading(false);
+        }
       } else {
-        router.push('/admin/login');
+        setLoading(false);
       }
-    } else {
-      setLoading(false);
     }
-  }, [pathname, router]);
+  }, [session, status, pathname, router]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (confirm('Are you sure you want to logout?')) {
-      localStorage.removeItem('adminAuthenticated');
-      localStorage.removeItem('adminUser');
-      router.push('/admin/login');
+      await signOut({ callbackUrl: '/admin/login' });
     }
   };
 
@@ -47,7 +44,7 @@ export default function AdminLayout({
   }
 
   // Show loading state while checking authentication
-  if (loading) {
+  if (loading || status === 'loading') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-gray-500">Loading...</div>
@@ -55,8 +52,8 @@ export default function AdminLayout({
     );
   }
 
-  // Only render admin layout if authenticated
-  if (!isAuthenticated) {
+  // Only render admin layout if authenticated and is admin
+  if (!session?.user || session.user.role !== 'ADMIN') {
     return null;
   }
 
@@ -74,7 +71,7 @@ export default function AdminLayout({
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <p className="text-sm text-white font-medium">Welcome, {adminUser}</p>
+                <p className="text-sm text-white font-medium">Welcome, {session.user.name}</p>
                 <p className="text-xs text-primary-200">Administrator</p>
               </div>
               <button

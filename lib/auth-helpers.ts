@@ -13,6 +13,24 @@ export async function requireAuth(request: NextRequest) {
   return session.user;
 }
 
+export async function requireAdmin(request: NextRequest) {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    throw new Error('Unauthorized');
+  }
+
+  if (session.user.role !== 'ADMIN') {
+    throw new Error('Forbidden: Admin access required');
+  }
+
+  return session.user;
+}
+
+export function isAdmin(user: { role: string } | null | undefined): boolean {
+  return user?.role === 'ADMIN';
+}
+
 export async function getOptionalAuth(request: NextRequest) {
   const session = await getServerSession(authOptions);
   return session?.user || null;

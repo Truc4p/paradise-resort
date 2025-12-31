@@ -8,11 +8,16 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ req, token }) => {
-        const { pathname, method } = req.nextUrl;
+        const { pathname } = req.nextUrl;
         
         // Allow access to admin login page (public)
         if (pathname === '/admin/login') {
           return true;
+        }
+        
+        // Protect admin routes - require authentication AND admin role
+        if (pathname.startsWith('/admin')) {
+          return !!token && token.role === 'ADMIN';
         }
         
         // Allow POST to /api/users (user registration)
