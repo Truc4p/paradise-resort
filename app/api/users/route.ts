@@ -19,9 +19,21 @@ export async function POST(request: NextRequest) {
     });
 
     if (existingUser) {
+      // For booking flow, return existing user instead of error
+      // This allows the booking form to work for returning guests
       return NextResponse.json(
-        { error: 'User with this email already exists' },
-        { status: 400 }
+        { 
+          message: 'Existing user found',
+          data: {
+            id: existingUser.id,
+            email: existingUser.email,
+            name: existingUser.name,
+            phone: existingUser.phone,
+            createdAt: existingUser.createdAt,
+            updatedAt: existingUser.updatedAt,
+          }
+        },
+        { status: 200 }
       );
     }
 

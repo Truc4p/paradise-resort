@@ -54,7 +54,8 @@ export default function Booking() {
       });
 
       if (!userResponse.ok) {
-        throw new Error('Failed to create user');
+        const errorData = await userResponse.json();
+        throw new Error(errorData.error || 'Failed to create user');
       }
 
       const userResult = await userResponse.json();
