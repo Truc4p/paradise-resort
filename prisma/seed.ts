@@ -71,9 +71,9 @@ async function main() {
       maxGuests: 4,
       size: 60,
       bedType: 'King + Twin',
-      imageUrl: 'https://images.unsplash.com/photo-1590490359854-6d2cd5e2c9b1?w=800',
+      imageUrl: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
       images: [
-        'https://images.unsplash.com/photo-1590490359854-6d2cd5e2c9b1?w=800',
+        'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800',
         'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800',
       ],
     },
