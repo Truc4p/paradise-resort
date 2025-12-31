@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 export default function AdminLogin() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
@@ -17,15 +19,24 @@ export default function AdminLogin() {
     setError('');
     setLoading(true);
 
-    // TODO: Replace with actual authentication API call
-    // For now, using simple demo credentials
-    if (credentials.username === 'admin' && credentials.password === 'admin123') {
-      // Set auth token in localStorage (replace with secure session/JWT in production)
-      localStorage.setItem('adminAuthenticated', 'true');
-      localStorage.setItem('adminUser', credentials.username);
-      router.push('/admin');
-    } else {
-      setError('Invalid username or password');
+    try {
+      const callbackUrl = searchParams.get('callbackUrl') || '/admin';
+      
+      const result = await signIn('credentials', {
+        email: credentials.username,
+        password: credentials.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError('Invalid username or password');
+        setLoading(false);
+      } else if (result?.ok) {
+        router.push(callbackUrl);
+        router.refresh();
+      }
+    } catch (err) {
+      setError('An error occurred during sign in');
       setLoading(false);
     }
   };
@@ -61,15 +72,15 @@ export default function AdminLogin() {
 
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Username
+                Email
               </label>
               <input
-                type="text"
+                type="email"
                 id="username"
                 value={credentials.username}
                 onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 required
               />
             </div>
@@ -102,7 +113,7 @@ export default function AdminLogin() {
           <div className="mt-6 p-4 bg-primary-50 border border-primary-200 rounded-lg">
             <p className="text-xs text-primary-800 font-semibold mb-1">Demo Credentials:</p>
             <p className="text-xs text-primary-700">
-              Username: <span className="font-mono font-semibold">admin</span>
+              Email: <span className="font-mono font-semibold">admin@resort.com</span>
             </p>
             <p className="text-xs text-primary-700">
               Password: <span className="font-mono font-semibold">admin123</span>
