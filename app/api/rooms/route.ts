@@ -53,19 +53,63 @@ export async function GET(request: NextRequest) {
         const bookedCount =
           overlappingBookings.find((b) => b.roomId === room.id)?._count.roomId || 0;
         const totalRooms = room.inventory[0]?.totalRooms || 0;
-        const available = totalRooms - bookedCount;
+        const availableRooms = Math.max(0, totalRooms - bookedCount);
 
         return {
           ...room,
-          available,
-          isAvailable: available > 0,
+          inventory: room.inventory.map(inv => ({
+            ...inv,
+            availableRooms,
+          })),
+          available: availableRooms,
+          isAvailable: availableRooms > 0,
         };
       });
 
       return NextResponse.json(roomsWithAvailability);
     }
 
-    return NextResponse.json(rooms);
+    // Calculate current availability (rooms occupied TODAY)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Get count of bookings that are currently occupying rooms TODAY
+    // (where today falls between checkIn and checkOut)
+    const activeBookings = await prisma.booking.groupBy({
+      by: ['roomId'],
+      where: {
+        status: {
+          in: ['PENDING', 'CONFIRMED'],
+        },
+        checkIn: {
+          lte: today,
+        },
+        checkOut: {
+          gt: today,
+        },
+      },
+      _count: {
+        roomId: true,
+      },
+    });
+
+    // Add current availability info to rooms
+    const roomsWithCurrentAvailability = rooms.map((room) => {
+      const bookedCount =
+        activeBookings.find((b) => b.roomId === room.id)?._count.roomId || 0;
+      const totalRooms = room.inventory[0]?.totalRooms || 0;
+      const availableRooms = Math.max(0, totalRooms - bookedCount);
+
+      return {
+        ...room,
+        inventory: room.inventory.map(inv => ({
+          ...inv,
+          availableRooms,
+        })),
+      };
+    });
+
+    return NextResponse.json(roomsWithCurrentAvailability);
   } catch (error) {
     console.error('Error fetching rooms:', error);
     return NextResponse.json({ error: 'Failed to fetch rooms' }, { status: 500 });

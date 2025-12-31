@@ -237,39 +237,45 @@ export default function AdminBookingsPage() {
 
       {/* Booking Details Modal */}
       {selectedBooking && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 space-y-6">
-              <div className="flex justify-between items-start">
-                <h3 className="text-2xl font-bold text-gray-900">
+        <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header with Gradient */}
+            <div className="bg-gradient-to-r from-primary-600 to-accent-600 px-6 py-5 rounded-t-xl">
+              <div className="flex justify-between items-center">
+                <h3 className="text-2xl font-bold text-white">
                   Booking Details
                 </h3>
                 <button
                   onClick={() => setSelectedBooking(null)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                  className="text-white hover:text-gray-200 text-3xl leading-none transition-colors"
                 >
                   ×
                 </button>
               </div>
+            </div>
 
+            <div className="p-6 space-y-6">
               {/* Guest Information */}
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Guest Information</h4>
-                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                  <div>
-                    <span className="text-sm text-gray-600">Name: </span>
+                <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                  <span className="w-1 h-6 bg-gradient-to-b from-primary-600 to-accent-600 rounded-full mr-2"></span>
+                  Guest Information
+                </h4>
+                <div className="bg-gradient-to-br from-primary-50 to-accent-50 rounded-lg p-4 space-y-3 border border-primary-100">
+                  <div className="flex items-start">
+                    <span className="text-sm text-gray-600 min-w-[140px]">Name:</span>
                     <span className="text-sm font-medium text-gray-900">
                       {selectedBooking.user?.name}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Email: </span>
+                  <div className="flex items-start">
+                    <span className="text-sm text-gray-600 min-w-[140px]">Email:</span>
                     <span className="text-sm font-medium text-gray-900">
                       {selectedBooking.user?.email}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Number of Guests: </span>
+                  <div className="flex items-start">
+                    <span className="text-sm text-gray-600 min-w-[140px]">Number of Guests:</span>
                     <span className="text-sm font-medium text-gray-900">
                       {selectedBooking.numberOfGuests}
                     </span>
@@ -279,42 +285,45 @@ export default function AdminBookingsPage() {
 
               {/* Booking Information */}
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Booking Information</h4>
-                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                  <div>
-                    <span className="text-sm text-gray-600">Room: </span>
-                    <span className="text-sm font-medium text-gray-900">
+                <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                  <span className="w-1 h-6 bg-gradient-to-b from-primary-600 to-accent-600 rounded-full mr-2"></span>
+                  Booking Information
+                </h4>
+                <div className="bg-gradient-to-br from-accent-50 to-primary-50 rounded-lg p-4 space-y-3 border border-accent-100">
+                  <div className="flex items-start">
+                    <span className="text-sm text-gray-600 min-w-[140px]">Room:</span>
+                    <span className="text-sm font-semibold text-primary-700">
                       {selectedBooking.room?.name}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Check-in: </span>
+                  <div className="flex items-start">
+                    <span className="text-sm text-gray-600 min-w-[140px]">Check-in:</span>
                     <span className="text-sm font-medium text-gray-900">
                       {new Date(selectedBooking.checkIn).toLocaleDateString()}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Check-out: </span>
+                  <div className="flex items-start">
+                    <span className="text-sm text-gray-600 min-w-[140px]">Check-out:</span>
                     <span className="text-sm font-medium text-gray-900">
                       {new Date(selectedBooking.checkOut).toLocaleDateString()}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Total Price: </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      ${selectedBooking.totalPrice.toFixed(2)}
+                  <div className="flex items-start">
+                    <span className="text-sm text-gray-600 min-w-[140px]">Total Price:</span>
+                    <span className="text-lg font-bold text-accent-700">
+                      ${Number(selectedBooking.totalPrice).toFixed(2)}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Booked on: </span>
+                  <div className="flex items-start">
+                    <span className="text-sm text-gray-600 min-w-[140px]">Booked on:</span>
                     <span className="text-sm font-medium text-gray-900">
                       {new Date(selectedBooking.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                   {selectedBooking.specialRequests && (
-                    <div>
-                      <span className="text-sm text-gray-600">Special Requests: </span>
-                      <p className="text-sm text-gray-900 mt-1">
+                    <div className="pt-2 border-t border-accent-200">
+                      <span className="text-sm font-medium text-gray-700">Special Requests:</span>
+                      <p className="text-sm text-gray-900 mt-2 bg-white rounded p-3 border border-accent-100">
                         {selectedBooking.specialRequests}
                       </p>
                     </div>
@@ -324,36 +333,39 @@ export default function AdminBookingsPage() {
 
               {/* Status Management */}
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Update Status</h4>
-                <div className="flex gap-2 flex-wrap">
+                <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                  <span className="w-1 h-6 bg-gradient-to-b from-primary-600 to-accent-600 rounded-full mr-2"></span>
+                  Update Status
+                </h4>
+                <div className="flex gap-3 flex-wrap">
                   <button
                     onClick={() => updateBookingStatus(selectedBooking.id, 'CONFIRMED')}
                     disabled={selectedBooking.status === 'CONFIRMED'}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                   >
                     Confirm
                   </button>
                   <button
                     onClick={() => updateBookingStatus(selectedBooking.id, 'PENDING')}
                     disabled={selectedBooking.status === 'PENDING'}
-                    className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-5 py-2.5 bg-gradient-to-r from-accent-600 to-accent-700 hover:from-accent-700 hover:to-accent-800 text-white rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                   >
                     Set Pending
                   </button>
                   <button
                     onClick={() => updateBookingStatus(selectedBooking.id, 'CANCELLED')}
                     disabled={selectedBooking.status === 'CANCELLED'}
-                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-5 py-2.5 bg-gradient-to-r from-red-100 to-red-200 hover:from-red-200 hover:to-red-300 text-red-700 rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                   >
                     Cancel
                   </button>
                 </div>
               </div>
 
-              <div className="pt-4 border-t">
+              <div className="pt-4 border-t border-gray-200">
                 <button
                   onClick={() => setSelectedBooking(null)}
-                  className="w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md transition-colors"
+                  className="w-full px-4 py-3 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 rounded-lg transition-all font-medium shadow-sm hover:shadow"
                 >
                   Close
                 </button>

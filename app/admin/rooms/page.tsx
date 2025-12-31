@@ -20,6 +20,8 @@ export default function AdminRoomsPage() {
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -38,7 +40,11 @@ export default function AdminRoomsPage() {
 
   const fetchRooms = async () => {
     try {
-      const res = await fetch('/api/rooms');
+      let url = '/api/rooms';
+      if (checkInDate && checkOutDate) {
+        url += `?checkIn=${checkInDate}&checkOut=${checkOutDate}`;
+      }
+      const res = await fetch(url);
       const data = await res.json();
       setRooms(data);
     } catch (error) {
@@ -46,6 +52,24 @@ export default function AdminRoomsPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDateFilter = () => {
+    if (checkInDate && checkOutDate) {
+      if (new Date(checkInDate) >= new Date(checkOutDate)) {
+        alert('Check-out date must be after check-in date');
+        return;
+      }
+      setLoading(true);
+      fetchRooms();
+    }
+  };
+
+  const handleClearFilter = () => {
+    setCheckInDate('');
+    setCheckOutDate('');
+    setLoading(true);
+    fetchRooms();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -125,6 +149,60 @@ export default function AdminRoomsPage() {
         >
           {showAddForm ? '✕ Cancel' : '+ Add New Room'}
         </button>
+      </div>
+
+      {/* Availability Check by Date */}
+      <div className="bg-gradient-to-br from-accent-50 to-primary-50 rounded-xl shadow-md border border-primary-100 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <span className="w-1 h-6 bg-gradient-to-b from-primary-600 to-accent-600 rounded-full mr-2"></span>
+          Check Availability by Date
+        </h3>
+        <div className="flex flex-wrap gap-4 items-end">
+          <div className="flex-1 min-w-[200px]">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Check-in Date
+            </label>
+            <input
+              type="date"
+              value={checkInDate}
+              onChange={(e) => setCheckInDate(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            />
+          </div>
+          <div className="flex-1 min-w-[200px]">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Check-out Date
+            </label>
+            <input
+              type="date"
+              value={checkOutDate}
+              onChange={(e) => setCheckOutDate(e.target.value)}
+              min={checkInDate || new Date().toISOString().split('T')[0]}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            />
+          </div>
+          <button
+            onClick={handleDateFilter}
+            disabled={!checkInDate || !checkOutDate}
+            className="bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white px-6 py-2.5 rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+          >
+            Check Availability
+          </button>
+          {(checkInDate || checkOutDate) && (
+            <button
+              onClick={handleClearFilter}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2.5 rounded-lg transition-all font-medium"
+            >
+              Clear Filter
+            </button>
+          )}
+        </div>
+        {checkInDate && checkOutDate && (
+          <div className="mt-4 text-sm text-gray-600">
+            Showing availability from <span className="font-semibold text-primary-700">{new Date(checkInDate).toLocaleDateString()}</span> to <span className="font-semibold text-primary-700">{new Date(checkOutDate).toLocaleDateString()}</span>
+          </div>
+        )}
       </div>
 
       {/* Add Room Form */}
@@ -359,9 +437,14 @@ export default function AdminRoomsPage() {
                     <td className="py-3 px-4 text-gray-600">{room.size} sq ft</td>
                     <td className="py-3 px-4 text-gray-600">{room.bedType}</td>
                     <td className="py-3 px-4">
-                      <span className="text-sm text-gray-900">
-                        {room.inventory[0]?.totalRooms || 0} total
-                      </span>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-sm font-medium text-gray-900">
+                          {room.inventory[0]?.totalRooms || 0} total
+                        </span>
+                        <span className="text-sm text-primary-600 font-semibold">
+                          {room.inventory[0]?.availableRooms || 0} available
+                        </span>
+                      </div>
                     </td>
                     <td className="py-3 px-4">
                       <button className="text-blue-600 hover:text-blue-800 text-sm">

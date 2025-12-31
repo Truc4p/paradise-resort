@@ -19,24 +19,8 @@ export default function Header() {
 
   const navLinks = [
     { name: 'Home', href: '/' },
-    { 
-      name: 'Rooms & Suites', 
-      href: '/rooms',
-      dropdown: [
-        { name: 'Deluxe Ocean View', href: '/rooms#deluxe' },
-        { name: 'Premium Suite', href: '/rooms#premium' },
-        { name: 'Presidential Villa', href: '/rooms#presidential' },
-      ]
-    },
-    { 
-      name: 'Dining', 
-      href: '/dining',
-      dropdown: [
-        { name: 'Ocean Breeze Restaurant', href: '/dining#ocean-breeze' },
-        { name: 'Seaside Grill', href: '/dining#seaside-grill' },
-        { name: 'Sunset Lounge', href: '/dining#sunset-lounge' },
-      ]
-    },
+    { name: 'Rooms & Suites', href: '/rooms' },
+    { name: 'Dining', href: '/dining' },
     { name: 'Special Offers', href: '/offers' },
     { name: 'Activities', href: '/activities' },
     { name: 'Gallery', href: '/gallery' },
@@ -64,35 +48,13 @@ export default function Header() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
             {navLinks.map((link) => (
-              <div 
+              <Link
                 key={link.name}
-                className="relative group"
-                onMouseEnter={() => link.dropdown && setActiveDropdown(link.name)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                href={link.href}
+                className="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors font-medium rounded-lg hover:bg-primary-50"
               >
-                <Link
-                  href={link.href}
-                  className="flex items-center gap-1 px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors font-medium rounded-lg hover:bg-primary-50"
-                >
-                  {link.name}
-                  {link.dropdown && <FaChevronDown className="text-xs" />}
-                </Link>
-                
-                {/* Dropdown Menu */}
-                {link.dropdown && activeDropdown === link.name && (
-                  <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 animate-fadeIn">
-                    {link.dropdown.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+                {link.name}
+              </Link>
             ))}
           </div>
 
@@ -116,29 +78,14 @@ export default function Header() {
         {isMenuOpen && (
           <div className="lg:hidden mt-4 pb-4 border-t border-gray-200 pt-4">
             {navLinks.map((link) => (
-              <div key={link.name}>
-                <Link
-                  href={link.href}
-                  className="block py-3 text-gray-700 hover:text-primary-600 transition-colors font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-                {link.dropdown && (
-                  <div className="pl-4 space-y-2">
-                    {link.dropdown.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block py-2 text-sm text-gray-600 hover:text-primary-600"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        → {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <Link
+                key={link.name}
+                href={link.href}
+                className="block py-3 text-gray-700 hover:text-primary-600 transition-colors font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
             ))}
             <Link href="/contact" className="btn-primary w-full mt-4 text-center" onClick={() => setIsMenuOpen(false)}>
               Book Now

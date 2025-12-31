@@ -5,6 +5,7 @@ import { FaBed, FaExpand, FaWifi, FaTv, FaCoffee, FaBath } from 'react-icons/fa'
 const rooms = [
   {
     name: 'Deluxe Ocean View',
+    slug: 'deluxe-ocean-view',
     image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070',
     price: '$250',
     priceUnit: 'per night',
@@ -15,6 +16,7 @@ const rooms = [
   },
   {
     name: 'Premium Suite',
+    slug: 'premium-suite',
     image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074',
     price: '$450',
     priceUnit: 'per night',
@@ -25,6 +27,7 @@ const rooms = [
   },
   {
     name: 'Presidential Villa',
+    slug: 'presidential-villa',
     image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=2025',
     price: '$850',
     priceUnit: 'per night',
@@ -113,7 +116,9 @@ export default function RoomsPage() {
                     <Link href="/contact" className="flex-1 btn-primary text-center">
                       Book Now
                     </Link>
-                    <button className="flex-1 btn-secondary">View Details</button>
+                    <Link href={`/rooms/${room.slug}`} className="flex-1 btn-secondary text-center">
+                      View Details
+                    </Link>
                   </div>
                 </div>
               </div>

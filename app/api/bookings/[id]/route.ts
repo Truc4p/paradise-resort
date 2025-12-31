@@ -66,6 +66,14 @@ export async function PATCH(
   }
 }
 
+// PUT /api/bookings/[id] - Update booking status (alias for PATCH)
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  return PATCH(request, { params });
+}
+
 // DELETE /api/bookings/[id] - Cancel/delete a booking
 export async function DELETE(
   request: NextRequest,
