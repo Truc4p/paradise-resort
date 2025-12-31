@@ -162,8 +162,18 @@ async function main() {
   // Create users
   console.log('👥 Creating users...');
   const hashedPassword = await bcrypt.hash('password123', 10);
+  const adminPassword = await bcrypt.hash('admin123', 10);
   
   const users = await Promise.all([
+    // Admin user
+    prisma.user.create({
+      data: {
+        name: 'Admin User',
+        email: 'admin@resort.com',
+        phone: '+1000000000',
+        password: adminPassword,
+      },
+    }),
     prisma.user.create({
       data: {
         name: 'John Doe',
@@ -194,7 +204,7 @@ async function main() {
   console.log('📅 Creating sample bookings...');
   const booking1 = await prisma.booking.create({
     data: {
-      userId: users[0].id,
+      userId: users[1].id, // John Doe
       roomId: deluxeRoom.id,
       checkIn: new Date('2025-02-01'),
       checkOut: new Date('2025-02-05'),
@@ -207,7 +217,7 @@ async function main() {
 
   const booking2 = await prisma.booking.create({
     data: {
-      userId: users[1].id,
+      userId: users[2].id, // Jane Smith
       roomId: presidentialSuite.id,
       checkIn: new Date('2025-03-15'),
       checkOut: new Date('2025-03-20'),
@@ -248,7 +258,7 @@ async function main() {
   await Promise.all([
     prisma.review.create({
       data: {
-        userId: users[0].id,
+        userId: users[1].id, // John Doe
         rating: 5,
         title: 'Amazing Experience!',
         comment: 'The resort exceeded all our expectations. The staff was incredibly friendly and the room was spotless.',
@@ -257,7 +267,7 @@ async function main() {
     }),
     prisma.review.create({
       data: {
-        userId: users[1].id,
+        userId: users[2].id, // Jane Smith
         rating: 5,
         title: 'Perfect Honeymoon',
         comment: 'We had an unforgettable honeymoon at this resort. The presidential suite was absolutely stunning!',
@@ -266,7 +276,7 @@ async function main() {
     }),
     prisma.review.create({
       data: {
-        userId: users[2].id,
+        userId: users[3].id, // Michael Johnson
         rating: 4,
         title: 'Great Stay',
         comment: 'Beautiful location and excellent facilities. Would definitely come back.',
