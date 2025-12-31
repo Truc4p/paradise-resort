@@ -10,6 +10,11 @@ export default withAuth(
       authorized: ({ req, token }) => {
         const { pathname, method } = req.nextUrl;
         
+        // Allow access to admin login page (public)
+        if (pathname === '/admin/login') {
+          return true;
+        }
+        
         // Allow POST to /api/users (user registration)
         if (pathname === '/api/users' && req.method === 'POST') {
           return true;
