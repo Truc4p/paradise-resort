@@ -15,6 +15,11 @@ export default withAuth(
           return true;
         }
         
+        // Allow POST to /api/bookings (guest bookings)
+        if (pathname === '/api/bookings' && req.method === 'POST') {
+          return true;
+        }
+        
         // Require authentication for other protected routes
         return !!token;
       },
