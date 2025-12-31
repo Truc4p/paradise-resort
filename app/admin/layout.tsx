@@ -120,6 +120,36 @@ export default function AdminLayout({
               >
                 Bookings
               </Link>
+              <Link
+                href="/admin/users"
+                className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
+                  pathname === '/admin/users'
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Users
+              </Link>
+              <Link
+                href="/admin/finance"
+                className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
+                  pathname === '/admin/finance'
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Finance
+              </Link>
+              <Link
+                href="/admin/analytics"
+                className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
+                  pathname === '/admin/analytics'
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Analytics
+              </Link>
               <div className="pt-4 mt-4 border-t border-gray-200">
                 <a
                   href="/"
