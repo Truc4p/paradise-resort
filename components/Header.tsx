@@ -21,6 +21,8 @@ export default function Header() {
     { name: 'Home', href: '/' },
     { name: 'Rooms & Suites', href: '/rooms' },
     { name: 'Dining', href: '/dining' },
+    { name: 'Medical Spa', href: '/medical-spa' },
+    { name: 'Health Resort', href: '/health-resort' },
     { name: 'Special Offers', href: '/offers' },
     { name: 'Activities', href: '/activities' },
     { name: 'Gallery', href: '/gallery' },

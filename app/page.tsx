@@ -5,6 +5,8 @@ import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Testimonials from "@/components/Testimonials";
 import Newsletter from "@/components/Newsletter";
+import MedicalSpa from "@/components/MedicalSpa";
+import HealthResort from "@/components/HealthResort";
 import Link from "next/link";
 import Image from "next/image";
 import { FaStar, FaAward, FaLeaf, FaHeart, FaUsers, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaPlay, FaQuoteLeft } from 'react-icons/fa';
@@ -453,6 +455,18 @@ export default function Home() {
                 link: '/dining'
               },
               { 
+                title: 'Medical Spa', 
+                image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2070',
+                description: 'Therapeutic treatments and wellness',
+                link: '/medical-spa'
+              },
+              { 
+                title: 'Health Resort', 
+                image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=2070',
+                description: 'Medical wellness programs',
+                link: '/health-resort'
+              },
+              { 
                 title: 'Special Offers', 
                 image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2080',
                 description: 'Exclusive packages and deals',
@@ -501,6 +515,8 @@ export default function Home() {
         </div>
       </section>
 
+      <MedicalSpa />
+      <HealthResort />
       <Testimonials />
       <Newsletter />
     </>
