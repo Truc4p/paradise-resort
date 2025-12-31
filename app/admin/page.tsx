@@ -80,13 +80,13 @@ export default function AdminDashboard() {
 
         <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <p className="text-amber-100 text-sm font-medium mb-2">Pending</p>
+          <p className="text-yellow-100 text-sm font-medium mb-2">Pending</p>
           <p className="text-4xl font-bold">{stats.pendingBookings}</p>
         </div>
 
         <div className="relative overflow-hidden bg-gradient-to-br from-orange-700 to-orange-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <p className="text-emerald-100 text-sm font-medium mb-2">Confirmed</p>
+          <p className="text-orange-100 text-sm font-medium mb-2">Confirmed</p>
           <p className="text-4xl font-bold">{stats.confirmedBookings}</p>
         </div>
 
