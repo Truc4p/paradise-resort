@@ -4,11 +4,12 @@ import { prisma } from '@/lib/prisma';
 // GET /api/bookings/[id] - Get a specific booking
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const booking = await prisma.booking.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         user: {
           select: {
@@ -37,14 +38,15 @@ export async function GET(
 // PATCH /api/bookings/[id] - Update booking status
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { status } = body;
 
     const booking = await prisma.booking.update({
-      where: { id: params.id },
+      where: { id },
       data: { status },
       include: {
         user: {
@@ -69,7 +71,7 @@ export async function PATCH(
 // PUT /api/bookings/[id] - Update booking status (alias for PATCH)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return PATCH(request, { params });
 }
@@ -77,11 +79,12 @@ export async function PUT(
 // DELETE /api/bookings/[id] - Cancel/delete a booking
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await prisma.booking.update({
-      where: { id: params.id },
+      where: { id },
       data: { status: 'CANCELLED' },
     });
 

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { handleApiError, successResponse } from '@/lib/api-helpers';
+import { RoomWithAvailability } from '@/lib/types';
 
 // GET /api/rooms - Get all rooms with availability
 export async function GET(request: NextRequest) {
@@ -49,7 +51,7 @@ export async function GET(request: NextRequest) {
       });
 
       // Add availability info to rooms
-      const roomsWithAvailability = rooms.map((room) => {
+      const roomsWithAvailability: RoomWithAvailability[] = rooms.map((room) => {
         const bookedCount =
           overlappingBookings.find((b) => b.roomId === room.id)?._count.roomId || 0;
         const totalRooms = room.inventory[0]?.totalRooms || 0;
@@ -66,7 +68,7 @@ export async function GET(request: NextRequest) {
         };
       });
 
-      return NextResponse.json(roomsWithAvailability);
+      return successResponse(roomsWithAvailability);
     }
 
     // Calculate current availability (rooms occupied TODAY)
@@ -94,7 +96,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Add current availability info to rooms
-    const roomsWithCurrentAvailability = rooms.map((room) => {
+    const roomsWithCurrentAvailability: RoomWithAvailability[] = rooms.map((room) => {
       const bookedCount =
         activeBookings.find((b) => b.roomId === room.id)?._count.roomId || 0;
       const totalRooms = room.inventory[0]?.totalRooms || 0;
@@ -106,13 +108,14 @@ export async function GET(request: NextRequest) {
           ...inv,
           availableRooms,
         })),
+        available: availableRooms,
+        isAvailable: availableRooms > 0,
       };
     });
 
-    return NextResponse.json(roomsWithCurrentAvailability);
+    return successResponse(roomsWithCurrentAvailability);
   } catch (error) {
-    console.error('Error fetching rooms:', error);
-    return NextResponse.json({ error: 'Failed to fetch rooms' }, { status: 500 });
+    return handleApiError(error);
   }
 }
 

@@ -107,41 +107,85 @@ export async function POST(request: NextRequest) {
     );
     const totalPrice = Number(room.basePrice) * nights;
 
-    // Create booking with payment
-    const booking = await prisma.booking.create({
-      data: {
-        userId,
-        roomId,
-        checkIn: checkInDate,
-        checkOut: checkOutDate,
-        numberOfGuests,
-        totalPrice,
-        specialRequests,
-        status: 'PENDING',
-        payment: {
-          create: {
-            amount: totalPrice,
-            paymentMethod: paymentMethod || 'credit_card',
-            paymentStatus: 'PENDING',
+    // Use transaction to ensure atomicity
+    const booking = await prisma.$transaction(async (tx) => {
+      // Double-check availability within transaction
+      const currentBookings = await tx.booking.count({
+        where: {
+          roomId,
+          status: {
+            in: ['PENDING', 'CONFIRMED'],
+          },
+          OR: [
+            {
+              checkIn: {
+                lte: checkOutDate,
+              },
+              checkOut: {
+                gte: checkInDate,
+              },
+            },
+          ],
+        },
+      });
+
+      if (currentBookings >= totalRooms) {
+        throw new Error('Room no longer available');
+      }
+
+      // Create booking with payment atomically
+      return await tx.booking.create({
+        data: {
+          userId,
+          roomId,
+          checkIn: checkInDate,
+          checkOut: checkOutDate,
+          numberOfGuests,
+          totalPrice,
+          specialRequests,
+          status: 'PENDING',
+          payment: {
+            create: {
+              amount: totalPrice,
+              paymentMethod: paymentMethod || 'CREDIT_CARD',
+              paymentStatus: 'PENDING',
+            },
           },
         },
-      },
-      include: {
-        room: true,
-        payment: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
+        include: {
+          room: true,
+          payment: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
           },
         },
-      },
+      });
     });
 
-    return NextResponse.json(booking, { status: 201 });
-  } catch (error) {
+    return NextResponse.json(
+      {
+        message: 'Booking created successfully',
+        data: booking,
+      },
+      { status: 201 }
+    );
+  } catch (error: any) {
     console.error('Error creating booking:', error);
-    return NextResponse.json({ error: 'Failed to create booking' }, { status: 500 });
+    
+    if (error.message === 'Room no longer available') {
+      return NextResponse.json(
+        { error: 'Room is no longer available for selected dates' },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to create booking' },
+      { status: 500 }
+    );
   }
 }
