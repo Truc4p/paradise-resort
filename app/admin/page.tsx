@@ -27,8 +27,12 @@ export default function AdminDashboard() {
         fetch('/api/rooms'),
       ]);
 
-      const bookings = await bookingsRes.json();
-      const rooms = await roomsRes.json();
+      const bookingsResult = await bookingsRes.json();
+      const roomsResult = await roomsRes.json();
+
+      // Handle new API response format
+      const bookings = Array.isArray(bookingsResult) ? bookingsResult : (bookingsResult.data || []);
+      const rooms = Array.isArray(roomsResult) ? roomsResult : (roomsResult.data || []);
 
       const stats: DashboardStats = {
         totalBookings: bookings.length,

@@ -23,10 +23,12 @@ export default function Booking() {
   useEffect(() => {
     fetch('/api/rooms')
       .then(res => res.json())
-      .then(data => {
-        setRooms(data);
-        if (data.length > 0) {
-          setFormData(prev => ({ ...prev, roomId: data[0].id }));
+      .then(response => {
+        // Handle new API response format: { success: true, data: [...] }
+        const roomsData = response.data || response;
+        setRooms(Array.isArray(roomsData) ? roomsData : []);
+        if (roomsData.length > 0) {
+          setFormData(prev => ({ ...prev, roomId: roomsData[0].id }));
         }
       })
       .catch(err => console.error('Error fetching rooms:', err));
@@ -55,7 +57,8 @@ export default function Booking() {
         throw new Error('Failed to create user');
       }
 
-      const user = await userResponse.json();
+      const userResult = await userResponse.json();
+      const user = userResult.data || userResult;
 
       // Create booking
       const bookingResponse = await fetch('/api/bookings', {
@@ -68,7 +71,7 @@ export default function Booking() {
           checkOut: formData.checkOut,
           numberOfGuests: parseInt(formData.guests),
           specialRequests: formData.message,
-          paymentMethod: 'credit_card',
+          paymentMethod: 'CREDIT_CARD',
         }),
       });
 
@@ -77,7 +80,8 @@ export default function Booking() {
         throw new Error(errorData.error || 'Failed to create booking');
       }
 
-      const booking = await bookingResponse.json();
+      const bookingResult = await bookingResponse.json();
+      const booking = bookingResult.data || bookingResult;
       setSuccess(true);
       alert(`Booking confirmed! Your booking ID is ${booking.id}`);
       

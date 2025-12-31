@@ -45,7 +45,9 @@ export default function AdminRoomsPage() {
         url += `?checkIn=${checkInDate}&checkOut=${checkOutDate}`;
       }
       const res = await fetch(url);
-      const data = await res.json();
+      const result = await res.json();
+      // Handle new API response format
+      const data = Array.isArray(result) ? result : (result.data || []);
       setRooms(data);
     } catch (error) {
       console.error('Error fetching rooms:', error);
