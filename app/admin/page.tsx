@@ -2,52 +2,100 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import {
+  FiBell,
+  FiAlertTriangle,
+  FiInfo,
+  FiCheckCircle,
+  FiClock,
+  FiLogIn,
+  FiLogOut,
+  FiMail,
+  FiDollarSign,
+  FiActivity,
+} from 'react-icons/fi';
 
-interface DashboardStats {
-  totalBookings: number;
-  pendingBookings: number;
-  confirmedBookings: number;
-  cancelledBookings: number;
-  totalRooms: number;
+interface Alert {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  count: number;
+  priority: string;
+  link?: string;
+}
+
+interface NotificationData {
+  alerts: Alert[];
+  todayCheckIns: any[];
+  todayCheckOuts: any[];
   recentBookings: any[];
+  pendingBookings: any[];
+  lowInventory: any[];
+  unreadMessages: any[];
+  pendingPayments: any[];
+  systemHealth: {
+    occupancyRate: number;
+    totalRooms: number;
+    availableRooms: number;
+    totalBookings: number;
+    totalUsers: number;
+    totalRevenue: number;
+    pendingBookingsCount: number;
+    pendingPaymentsCount: number;
+    unreadMessagesCount: number;
+    lowInventoryCount: number;
+  };
 }
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [data, setData] = useState<NotificationData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchDashboardStats();
+    fetchDashboardData();
+    // Refresh every 30 seconds for real-time updates
+    const interval = setInterval(fetchDashboardData, 30000);
+    return () => clearInterval(interval);
   }, []);
 
-  const fetchDashboardStats = async () => {
+  const fetchDashboardData = async () => {
     try {
-      const [bookingsRes, roomsRes] = await Promise.all([
-        fetch('/api/bookings'),
-        fetch('/api/rooms'),
-      ]);
-
-      const bookingsResult = await bookingsRes.json();
-      const roomsResult = await roomsRes.json();
-
-      // Handle new API response format
-      const bookings = Array.isArray(bookingsResult) ? bookingsResult : (bookingsResult.data || []);
-      const rooms = Array.isArray(roomsResult) ? roomsResult : (roomsResult.data || []);
-
-      const stats: DashboardStats = {
-        totalBookings: bookings.length,
-        pendingBookings: bookings.filter((b: any) => b.status === 'PENDING').length,
-        confirmedBookings: bookings.filter((b: any) => b.status === 'CONFIRMED').length,
-        cancelledBookings: bookings.filter((b: any) => b.status === 'CANCELLED').length,
-        totalRooms: rooms.length,
-        recentBookings: bookings.slice(0, 5),
-      };
-
-      setStats(stats);
+      const res = await fetch('/api/admin/notifications');
+      const result = await res.json();
+      if (result.success) {
+        setData(result.data);
+      }
     } catch (error) {
-      console.error('Error fetching dashboard stats:', error);
+      console.error('Error fetching dashboard data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getAlertIcon = (type: string) => {
+    switch (type) {
+      case 'warning':
+        return <FiAlertTriangle className="text-xl" />;
+      case 'success':
+        return <FiCheckCircle className="text-xl" />;
+      case 'info':
+        return <FiInfo className="text-xl" />;
+      default:
+        return <FiBell className="text-xl" />;
+    }
+  };
+
+  const getAlertColor = (type: string) => {
+    switch (type) {
+      case 'warning':
+        return 'from-yellow-500 to-orange-600';
+      case 'success':
+        return 'from-green-500 to-emerald-600';
+      case 'info':
+        return 'from-blue-500 to-cyan-600';
+      default:
+        return 'from-gray-500 to-gray-600';
     }
   };
 
@@ -59,141 +107,273 @@ export default function AdminDashboard() {
     );
   }
 
-  if (!stats) {
+  if (!data) {
     return (
       <div className="text-center text-red-500">
-        Failed to load dashboard statistics
+        Failed to load dashboard data
       </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      <div>
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Dashboard Overview</h2>
-        <p className="text-gray-600 mt-2">Monitor your resort's performance and bookings</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+            Dashboard Overview
+          </h2>
+          <p className="text-gray-600 mt-2">Real-time insights and notifications</p>
+        </div>
+        <button
+          onClick={fetchDashboardData}
+          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+        >
+          <FiActivity /> Refresh
+        </button>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="relative overflow-hidden bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <p className="text-primary-100 text-sm font-medium mb-2">Total Bookings</p>
-          <p className="text-4xl font-bold">{stats.totalBookings}</p>
-        </div>
-
-        <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <p className="text-yellow-100 text-sm font-medium mb-2">Pending</p>
-          <p className="text-4xl font-bold">{stats.pendingBookings}</p>
-        </div>
-
-        <div className="relative overflow-hidden bg-gradient-to-br from-orange-700 to-orange-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <p className="text-orange-100 text-sm font-medium mb-2">Confirmed</p>
-          <p className="text-4xl font-bold">{stats.confirmedBookings}</p>
-        </div>
-
-        <div className="relative overflow-hidden bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <p className="text-accent-100 text-sm font-medium mb-2">Total Rooms</p>
-          <p className="text-4xl font-bold">{stats.totalRooms}</p>
-        </div>
-      </div>
-
-      {/* Recent Bookings */}
-      <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-        <div className="bg-gradient-to-r from-gray-50 to-white px-6 py-5 border-b border-gray-200">
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900">Recent Bookings</h3>
-              <p className="text-sm text-gray-600 mt-1">Latest reservation activity</p>
-            </div>
-            <Link
-              href="/admin/bookings"
-              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors text-sm font-medium shadow-sm"
+      {/* Alerts Banner */}
+      {data.alerts.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {data.alerts.slice(0, 6).map((alert) => (
+            <div
+              key={alert.id}
+              className={`bg-gradient-to-r ${getAlertColor(alert.type)} rounded-xl shadow-lg p-4 text-white cursor-pointer hover:shadow-xl transition-all`}
+              onClick={() => alert.link && (window.location.href = alert.link)}
             >
-              View All →
-            </Link>
-          </div>
+              <div className="flex items-start justify-between">
+                <div className="flex items-start gap-3">
+                  {getAlertIcon(alert.type)}
+                  <div>
+                    <h4 className="font-bold text-sm">{alert.title}</h4>
+                    <p className="text-sm opacity-90 mt-1">{alert.message}</p>
+                  </div>
+                </div>
+                {alert.count > 0 && (
+                  <span className="bg-white bg-opacity-30 px-2 py-1 rounded-full text-xs font-bold">
+                    {alert.count}
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="p-6">
+      )}
 
-        {stats.recentBookings.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No bookings yet</p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-4 px-4 text-xs font-bold text-gray-600 uppercase tracking-wider">
-                    Guest
-                  </th>
-                  <th className="text-left py-4 px-4 text-xs font-bold text-gray-600 uppercase tracking-wider">
-                    Room
-                  </th>
-                  <th className="text-left py-4 px-4 text-xs font-bold text-gray-600 uppercase tracking-wider">
-                    Check-in
-                  </th>
-                  <th className="text-left py-4 px-4 text-xs font-bold text-gray-600 uppercase tracking-wider">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats.recentBookings.map((booking) => (
-                  <tr key={booking.id} className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-primary-50 hover:to-transparent transition-colors">
-                    <td className="py-3 px-4 text-sm text-gray-900">
-                      {booking.user?.name || 'N/A'}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-900">
-                      {booking.room?.name || 'N/A'}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-600">
-                      {new Date(booking.checkIn).toLocaleDateString()}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          booking.status === 'CONFIRMED'
-                            ? 'bg-green-100 text-green-800'
-                            : booking.status === 'PENDING'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}
-                      >
-                        {booking.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* System Health Status */}
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <FiActivity className="text-2xl text-primary-600" />
+          <h3 className="text-2xl font-bold text-gray-900">System Health</h3>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg p-4">
+            <p className="text-sm text-blue-600 font-medium mb-1">Occupancy Rate</p>
+            <p className="text-3xl font-bold text-blue-900">{data.systemHealth.occupancyRate}%</p>
           </div>
-        )}
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4">
+            <p className="text-sm text-green-600 font-medium mb-1">Available Rooms</p>
+            <p className="text-3xl font-bold text-green-900">{data.systemHealth.availableRooms}</p>
+          </div>
+          <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg p-4">
+            <p className="text-sm text-purple-600 font-medium mb-1">Total Bookings</p>
+            <p className="text-3xl font-bold text-purple-900">{data.systemHealth.totalBookings}</p>
+          </div>
+          <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg p-4">
+            <p className="text-sm text-orange-600 font-medium mb-1">Total Users</p>
+            <p className="text-3xl font-bold text-orange-900">{data.systemHealth.totalUsers}</p>
+          </div>
+          <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg p-4">
+            <p className="text-sm text-pink-600 font-medium mb-1">Total Revenue</p>
+            <p className="text-2xl font-bold text-pink-900">${data.systemHealth.totalRevenue.toLocaleString()}</p>
+          </div>
         </div>
       </div>
+
+      {/* Today's Activities */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Today's Check-ins */}
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-4 border-b border-green-100">
+            <div className="flex items-center gap-2">
+              <FiLogIn className="text-xl text-green-600" />
+              <h3 className="text-xl font-bold text-gray-900">Today's Check-ins</h3>
+              <span className="ml-auto bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                {data.todayCheckIns.length}
+              </span>
+            </div>
+          </div>
+          <div className="p-6 max-h-80 overflow-y-auto">
+            {data.todayCheckIns.length === 0 ? (
+              <p className="text-gray-500 text-center py-8">No check-ins today</p>
+            ) : (
+              <div className="space-y-3">
+                {data.todayCheckIns.map((booking) => (
+                  <div key={booking.id} className="border border-gray-200 rounded-lg p-3 hover:border-green-300 transition-colors">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-semibold text-gray-900">{booking.user.name}</p>
+                        <p className="text-sm text-gray-600">{booking.room.name}</p>
+                        <p className="text-xs text-gray-500">{booking.user.email}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-medium text-green-600">
+                          {new Date(booking.checkIn).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                        <p className="text-xs text-gray-500">{booking.numberOfGuests} guests</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Today's Check-outs */}
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-6 py-4 border-b border-orange-100">
+            <div className="flex items-center gap-2">
+              <FiLogOut className="text-xl text-orange-600" />
+              <h3 className="text-xl font-bold text-gray-900">Today's Check-outs</h3>
+              <span className="ml-auto bg-orange-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                {data.todayCheckOuts.length}
+              </span>
+            </div>
+          </div>
+          <div className="p-6 max-h-80 overflow-y-auto">
+            {data.todayCheckOuts.length === 0 ? (
+              <p className="text-gray-500 text-center py-8">No check-outs today</p>
+            ) : (
+              <div className="space-y-3">
+                {data.todayCheckOuts.map((booking) => (
+                  <div key={booking.id} className="border border-gray-200 rounded-lg p-3 hover:border-orange-300 transition-colors">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-semibold text-gray-900">{booking.user.name}</p>
+                        <p className="text-sm text-gray-600">{booking.room.name}</p>
+                        <p className="text-xs text-gray-500">{booking.user.email}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-medium text-orange-600">
+                          {new Date(booking.checkOut).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                        <p className="text-xs text-gray-500">{booking.numberOfGuests} guests</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Low Inventory Warning */}
+      {data.lowInventory.length > 0 && (
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden border-l-4 border-yellow-500">
+          <div className="bg-yellow-50 px-6 py-4 border-b border-yellow-100">
+            <div className="flex items-center gap-2">
+              <FiAlertTriangle className="text-xl text-yellow-600" />
+              <h3 className="text-xl font-bold text-gray-900">Low Room Availability</h3>
+            </div>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {data.lowInventory.map((room: any) => (
+                <div key={room.roomId} className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <h4 className="font-bold text-gray-900 mb-2">{room.roomName}</h4>
+                  <div className="space-y-1 text-sm">
+                    <p className="text-gray-700">
+                      Available: <span className="font-bold text-yellow-700">{room.availableRooms}</span> / {room.totalRooms}
+                    </p>
+                    <p className="text-gray-700">
+                      Booked: <span className="font-bold">{room.bookedRooms}</span>
+                    </p>
+                    <div className="mt-2 bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-yellow-500 h-2 rounded-full"
+                        style={{ width: `${100 - room.availabilityPercentage}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Unread Messages */}
+      {data.unreadMessages.length > 0 && (
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-blue-50 px-6 py-4 border-b border-blue-100">
+            <div className="flex items-center gap-2">
+              <FiMail className="text-xl text-blue-600" />
+              <h3 className="text-xl font-bold text-gray-900">Unread Customer Messages</h3>
+              <span className="ml-auto bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                {data.unreadMessages.length}
+              </span>
+            </div>
+          </div>
+          <div className="p-6">
+            <div className="space-y-3">
+              {data.unreadMessages.slice(0, 5).map((message: any) => (
+                <div key={message.id} className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <p className="font-semibold text-gray-900">{message.name}</p>
+                      <p className="text-sm text-gray-600">{message.email}</p>
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      {new Date(message.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <p className="font-medium text-gray-800 text-sm mb-1">{message.subject}</p>
+                  <p className="text-sm text-gray-600 line-clamp-2">{message.message}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link
-          href="/admin/rooms"
-          className="group relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 hover:from-primary-700 hover:via-primary-800 hover:to-primary-900 text-white rounded-xl shadow-lg hover:shadow-2xl p-8 transition-all duration-300 transform hover:-translate-y-1"
+          href="/admin/bookings"
+          className="group bg-gradient-to-br from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white rounded-xl shadow-lg hover:shadow-xl p-6 transition-all transform hover:-translate-y-1"
         >
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white opacity-5 rounded-full -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-500"></div>
-          <h3 className="text-2xl font-bold mb-3 relative z-10">Manage Rooms</h3>
-          <p className="text-primary-100 relative z-10 text-sm">Add, edit, or remove room listings and inventory</p>
-          <div className="mt-4 text-primary-200 group-hover:text-white transition-colors relative z-10 text-sm font-medium">Get started →</div>
+          <FiClock className="text-3xl mb-3" />
+          <h3 className="text-lg font-bold mb-2">Manage Bookings</h3>
+          <p className="text-sm text-primary-100">View and update reservations</p>
         </Link>
 
         <Link
-          href="/admin/bookings"
-          className="group relative overflow-hidden bg-gradient-to-br from-accent-600 via-accent-700 to-accent-800 hover:from-accent-700 hover:via-accent-800 hover:to-accent-900 text-white rounded-xl shadow-lg hover:shadow-2xl p-8 transition-all duration-300 transform hover:-translate-y-1"
+          href="/admin/rooms"
+          className="group bg-gradient-to-br from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-xl shadow-lg hover:shadow-xl p-6 transition-all transform hover:-translate-y-1"
         >
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white opacity-5 rounded-full -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-500"></div>
-          <h3 className="text-2xl font-bold mb-3 relative z-10">Manage Bookings</h3>
-          <p className="text-accent-100 relative z-10 text-sm">View and update booking status and reservations</p>
-          <div className="mt-4 text-accent-200 group-hover:text-white transition-colors relative z-10 text-sm font-medium">Get started →</div>
+          <FiActivity className="text-3xl mb-3" />
+          <h3 className="text-lg font-bold mb-2">Manage Rooms</h3>
+          <p className="text-sm text-orange-100">Update room inventory</p>
+        </Link>
+
+        <Link
+          href="/admin/finance"
+          className="group bg-gradient-to-br from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl shadow-lg hover:shadow-xl p-6 transition-all transform hover:-translate-y-1"
+        >
+          <FiDollarSign className="text-3xl mb-3" />
+          <h3 className="text-lg font-bold mb-2">Finance</h3>
+          <p className="text-sm text-green-100">Track payments & revenue</p>
+        </Link>
+
+        <Link
+          href="/admin/analytics"
+          className="group bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl shadow-lg hover:shadow-xl p-6 transition-all transform hover:-translate-y-1"
+        >
+          <FiActivity className="text-3xl mb-3" />
+          <h3 className="text-lg font-bold mb-2">Analytics</h3>
+          <p className="text-sm text-purple-100">View detailed reports</p>
         </Link>
       </div>
     </div>

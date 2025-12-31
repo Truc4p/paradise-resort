@@ -111,6 +111,16 @@ export default function AdminLayout({
                 Rooms
               </Link>
               <Link
+                href="/admin/rooms/advanced"
+                className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
+                  pathname === '/admin/rooms/advanced'
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Advanced Rooms
+              </Link>
+              <Link
                 href="/admin/bookings"
                 className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
                   pathname === '/admin/bookings'
@@ -139,6 +149,26 @@ export default function AdminLayout({
                 }`}
               >
                 Finance
+              </Link>
+              <Link
+                href="/admin/content"
+                className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
+                  pathname === '/admin/content'
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Content
+              </Link>
+              <Link
+                href="/admin/communications"
+                className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
+                  pathname === '/admin/communications'
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Communications
               </Link>
               <Link
                 href="/admin/analytics"
