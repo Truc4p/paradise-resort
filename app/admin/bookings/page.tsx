@@ -109,7 +109,7 @@ export default function AdminBookingsPage() {
           <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Booking Management</h2>
           <p className="text-gray-600 mt-2">View and manage all reservations</p>
         </div>
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg shadow-lg">
+        <div className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 py-3 rounded-lg shadow-lg">
           <div className="text-sm font-medium opacity-90">Total Bookings</div>
           <div className="text-2xl font-bold">{filteredBookings.length}</div>
         </div>
@@ -124,7 +124,7 @@ export default function AdminBookingsPage() {
               onClick={() => setFilter(status)}
               className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
                 filter === status
-                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform -translate-y-0.5'
+                  ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg transform -translate-y-0.5'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
               }`}
             >

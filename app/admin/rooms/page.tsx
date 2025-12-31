@@ -121,7 +121,7 @@ export default function AdminRoomsPage() {
         </div>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-medium transform hover:-translate-y-0.5"
+          className="bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-medium transform hover:-translate-y-0.5"
         >
           {showAddForm ? '✕ Cancel' : '+ Add New Room'}
         </button>
@@ -338,7 +338,7 @@ export default function AdminRoomsPage() {
                 </tr>
               ) : (
                 rooms.map((room) => (
-                  <tr key={room.id} className="border-t border-gray-100 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all">
+                  <tr key={room.id} className="border-t border-gray-100 hover:bg-gradient-to-r hover:from-primary-50 hover:to-transparent transition-all">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-4">
                         <img

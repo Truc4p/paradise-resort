@@ -63,19 +63,19 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Admin Header */}
-      <header className="bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg border-b border-blue-800">
+      <header className="bg-gradient-to-r from-primary-600 via-primary-700 to-accent-700 shadow-lg border-b border-primary-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div>
               <h1 className="text-2xl font-bold text-white tracking-tight">
                 Paradise Resort - Admin Portal
               </h1>
-              <p className="text-blue-100 text-xs mt-0.5">Management Dashboard</p>
+              <p className="text-primary-100 text-xs mt-0.5">Management Dashboard</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <p className="text-sm text-white font-medium">Welcome, {adminUser}</p>
-                <p className="text-xs text-blue-200">Administrator</p>
+                <p className="text-xs text-primary-200">Administrator</p>
               </div>
               <button
                 onClick={handleLogout}
@@ -97,7 +97,7 @@ export default function AdminLayout({
                 href="/admin"
                 className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
                   pathname === '/admin'
-                    ? 'bg-blue-50 text-blue-600'
+                    ? 'bg-primary-50 text-primary-700'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -107,7 +107,7 @@ export default function AdminLayout({
                 href="/admin/rooms"
                 className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
                   pathname === '/admin/rooms'
-                    ? 'bg-blue-50 text-blue-600'
+                    ? 'bg-primary-50 text-primary-700'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -117,7 +117,7 @@ export default function AdminLayout({
                 href="/admin/bookings"
                 className={`block px-4 py-3 rounded-lg transition-colors font-medium ${
                   pathname === '/admin/bookings'
-                    ? 'bg-blue-50 text-blue-600'
+                    ? 'bg-primary-50 text-primary-700'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >

@@ -72,27 +72,27 @@ export default function AdminDashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
+        <div className="relative overflow-hidden bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <p className="text-blue-100 text-sm font-medium mb-2">Total Bookings</p>
+          <p className="text-primary-100 text-sm font-medium mb-2">Total Bookings</p>
           <p className="text-4xl font-bold">{stats.totalBookings}</p>
         </div>
 
-        <div className="relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
+        <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
           <p className="text-amber-100 text-sm font-medium mb-2">Pending</p>
           <p className="text-4xl font-bold">{stats.pendingBookings}</p>
         </div>
 
-        <div className="relative overflow-hidden bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
+        <div className="relative overflow-hidden bg-gradient-to-br from-orange-700 to-orange-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
           <p className="text-emerald-100 text-sm font-medium mb-2">Confirmed</p>
           <p className="text-4xl font-bold">{stats.confirmedBookings}</p>
         </div>
 
-        <div className="relative overflow-hidden bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
+        <div className="relative overflow-hidden bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <p className="text-purple-100 text-sm font-medium mb-2">Total Rooms</p>
+          <p className="text-accent-100 text-sm font-medium mb-2">Total Rooms</p>
           <p className="text-4xl font-bold">{stats.totalRooms}</p>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
             </div>
             <Link
               href="/admin/bookings"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-medium shadow-sm"
+              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors text-sm font-medium shadow-sm"
             >
               View All →
             </Link>
@@ -138,7 +138,7 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {stats.recentBookings.map((booking) => (
-                  <tr key={booking.id} className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors">
+                  <tr key={booking.id} className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-primary-50 hover:to-transparent transition-colors">
                     <td className="py-3 px-4 text-sm text-gray-900">
                       {booking.user?.name || 'N/A'}
                     </td>
@@ -174,22 +174,22 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Link
           href="/admin/rooms"
-          className="group relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 text-white rounded-xl shadow-lg hover:shadow-2xl p-8 transition-all duration-300 transform hover:-translate-y-1"
+          className="group relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 hover:from-primary-700 hover:via-primary-800 hover:to-primary-900 text-white rounded-xl shadow-lg hover:shadow-2xl p-8 transition-all duration-300 transform hover:-translate-y-1"
         >
           <div className="absolute top-0 right-0 w-40 h-40 bg-white opacity-5 rounded-full -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-500"></div>
           <h3 className="text-2xl font-bold mb-3 relative z-10">Manage Rooms</h3>
-          <p className="text-blue-100 relative z-10 text-sm">Add, edit, or remove room listings and inventory</p>
-          <div className="mt-4 text-blue-200 group-hover:text-white transition-colors relative z-10 text-sm font-medium">Get started →</div>
+          <p className="text-primary-100 relative z-10 text-sm">Add, edit, or remove room listings and inventory</p>
+          <div className="mt-4 text-primary-200 group-hover:text-white transition-colors relative z-10 text-sm font-medium">Get started →</div>
         </Link>
 
         <Link
           href="/admin/bookings"
-          className="group relative overflow-hidden bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 hover:from-emerald-700 hover:via-green-800 hover:to-teal-900 text-white rounded-xl shadow-lg hover:shadow-2xl p-8 transition-all duration-300 transform hover:-translate-y-1"
+          className="group relative overflow-hidden bg-gradient-to-br from-accent-600 via-accent-700 to-accent-800 hover:from-accent-700 hover:via-accent-800 hover:to-accent-900 text-white rounded-xl shadow-lg hover:shadow-2xl p-8 transition-all duration-300 transform hover:-translate-y-1"
         >
           <div className="absolute top-0 right-0 w-40 h-40 bg-white opacity-5 rounded-full -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-500"></div>
           <h3 className="text-2xl font-bold mb-3 relative z-10">Manage Bookings</h3>
-          <p className="text-emerald-100 relative z-10 text-sm">View and update booking status and reservations</p>
-          <div className="mt-4 text-emerald-200 group-hover:text-white transition-colors relative z-10 text-sm font-medium">Get started →</div>
+          <p className="text-accent-100 relative z-10 text-sm">View and update booking status and reservations</p>
+          <div className="mt-4 text-accent-200 group-hover:text-white transition-colors relative z-10 text-sm font-medium">Get started →</div>
         </Link>
       </div>
     </div>

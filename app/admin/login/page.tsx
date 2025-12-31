@@ -31,7 +31,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Logo/Header */}
         <div className="text-center mb-8">
@@ -68,7 +68,7 @@ export default function AdminLogin() {
                 id="username"
                 value={credentials.username}
                 onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                 placeholder="Enter your username"
                 required
               />
@@ -83,7 +83,7 @@ export default function AdminLogin() {
                 id="password"
                 value={credentials.password}
                 onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                 placeholder="Enter your password"
                 required
               />
@@ -92,19 +92,19 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold py-3 rounded-lg transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
           {/* Demo Credentials Notice */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-xs text-blue-800 font-semibold mb-1">Demo Credentials:</p>
-            <p className="text-xs text-blue-700">
+          <div className="mt-6 p-4 bg-primary-50 border border-primary-200 rounded-lg">
+            <p className="text-xs text-primary-800 font-semibold mb-1">Demo Credentials:</p>
+            <p className="text-xs text-primary-700">
               Username: <span className="font-mono font-semibold">admin</span>
             </p>
-            <p className="text-xs text-blue-700">
+            <p className="text-xs text-primary-700">
               Password: <span className="font-mono font-semibold">admin123</span>
             </p>
           </div>
