@@ -372,7 +372,7 @@ export default function FinancePage() {
               />
               <YAxis />
               <Tooltip
-                formatter={(value: number) => `$${value.toFixed(2)}`}
+                formatter={(value: number | undefined) => value !== undefined ? `$${value.toFixed(2)}` : 'N/A'}
                 labelFormatter={(label) => new Date(label).toLocaleDateString()}
               />
               <Legend />
@@ -413,7 +413,7 @@ export default function FinancePage() {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="method" />
             <YAxis />
-            <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+            <Tooltip formatter={(value: number | undefined) => value !== undefined ? `$${value.toFixed(2)}` : 'N/A'} />
             <Legend />
             <Bar dataKey="amount" fill="#2563EB" name="Amount" />
           </BarChart>
