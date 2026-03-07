@@ -251,7 +251,7 @@ export default function AnalyticsPage() {
                 cx="50%"
                 cy="50%"
                 outerRadius={100}
-                label={({ status, count }) => `${status}: ${count}`}
+                label={({ name, value }) => `${name}: ${value}`}
               >
                 {data.charts.statusBreakdown.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -271,7 +271,8 @@ export default function AnalyticsPage() {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis type="number" />
             <YAxis dataKey="name" type="category" width={150} />
-            <Tooltip formatter={(value: number, name: string) => {
+            <Tooltip formatter={(value: number | undefined, name: string | undefined) => {
+              if (value === undefined) return 'N/A';
               if (name === 'revenue') return formatCurrency(value);
               return value;
             }} />
