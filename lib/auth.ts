@@ -80,4 +80,7 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === 'development',
+  // Vercel auto-detects the URL, so we don't need to set it explicitly
+  // Only set trustHost in production to allow Vercel's automatic URL detection
+  trustHost: true,
 };
