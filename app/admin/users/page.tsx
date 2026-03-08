@@ -477,12 +477,12 @@ export default function AdminUsersPage() {
                                 <span className="text-gray-600">Payment: </span>
                                 <span
                                   className={`font-medium ${
-                                    booking.payment.status === 'COMPLETED'
+                                    booking.payment.paymentStatus === 'COMPLETED'
                                       ? 'text-green-600'
                                       : 'text-yellow-600'
                                   }`}
                                 >
-                                  {booking.payment.status}
+                                  {booking.payment.paymentStatus}
                                 </span>
                               </div>
                             )}
