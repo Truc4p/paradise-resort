@@ -27,7 +27,7 @@ interface User {
     payment: {
       id: string;
       amount: number;
-      status: string;
+      paymentStatus: string;
     } | null;
   }[];
   stats: {
