@@ -393,7 +393,7 @@ export default function FinancePage() {
                 cx="50%"
                 cy="50%"
                 outerRadius={100}
-                label={({ status, count }) => `${status}: ${count}`}
+                label={({ name, value }) => `${name}: ${value}`}
               >
                 {data.charts.statusBreakdown.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={STATUS_COLORS[entry.status]} />
